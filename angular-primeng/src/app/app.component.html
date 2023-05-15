@@ -1,0 +1,197 @@
+<h1>PRIME NG GENERAL COMPONENTS</h1>
+
+<br />
+
+<div>
+  <h3>Input Text</h3>
+  <input #myValue="ngModel" type="text" pInputText [(ngModel)]="title" />
+  &nbsp;
+  <span *ngIf="myValue.dirty">{{ title }}</span>
+</div>
+<br />
+<div>
+  <h3>Data Table</h3>
+  <p-table
+    [value]="products"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[3, 5, 10]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">Id<p-sortIcon field="code"></p-sortIcon></th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Picture</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{ product.id }}</td>
+        <td>{{ product.title }}</td>
+        <td>{{ product.category }}</td>
+        <td>
+          {{ product.price | currency : 'TRY' : '₺' : '.2-2' }}
+        </td>
+        <td><img src="{{ product.image }}" style="width: 30px" alt="" /></td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <h5>Dynamic Data Table</h5>
+  <small>(Just check the code!)</small>
+
+  <p-table
+    [columns]="cols"
+    [value]="products"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          <img
+            *ngIf="col.header === 'Picture'"
+            src="{{ rowData[col.field] }}"
+            alt=""
+            width="30px"
+          />
+          <span *ngIf="col.header !== 'Picture'">{{ rowData[col.field] }}</span>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<br />
+
+<div>
+  <h3>Dropdown</h3>
+
+  <p-dropdown
+    [options]="products"
+    [(ngModel)]="selectedProduct"
+    optionLabel="title"
+    optionValue="price"
+    placeholder="Select a Product"
+    [showClear]="true"
+    [filter]="true"
+  ></p-dropdown>
+  &nbsp;
+  <span *ngIf="selectedProduct">{{ selectedProduct | json | currency }}</span>
+
+  <h5>Dropdown Labels' with Images</h5>
+  <p-dropdown
+    [options]="products"
+    [(ngModel)]="selectedProduct"
+    optionLabel="title"
+    placeholder="Select a Product"
+  >
+    <ng-template let-product pTemplate="selectedItem">
+      <div class="align-items-center flex gap-2" *ngIf="selectedProduct">
+        <img
+          src="{{ product.image }}"
+          style="display: block"
+          style="width: 18px"
+        />&nbsp;{{ product.title }}
+        <div></div>
+      </div>
+    </ng-template>
+    <ng-template let-product pTemplate="item">
+      <div class="align-items-center flex gap-2">
+        <img src="{{ product.image }}" style="width: 18px" />
+        <div>{{ product.title }}</div>
+      </div>
+    </ng-template>
+  </p-dropdown>
+
+  <h5>Multiselect Dropdown</h5>
+
+  <p-multiSelect
+    defaultLabel="Select a Product"
+    [options]="products"
+    [(ngModel)]="selectedProduct"
+    optionLabel="title"
+    [showClear]="true"
+    [maxSelectedLabels]="3"
+    [selectionLimit]="5"
+    [selectedItemsLabel]="'{0} items selected!'"
+  ></p-multiSelect>
+  <h5>Multiselect Dropdown (chip)</h5>
+
+  <p-multiSelect
+    defaultLabel="Select a Product"
+    [options]="products"
+    [(ngModel)]="selectedProduct"
+    optionLabel="title"
+    display="chip"
+  ></p-multiSelect>
+</div>
+
+<div>
+  <h3>Checkbox</h3>
+
+  <p-checkbox
+    name="termsAndConditions"
+    [binary]="true"
+    [(ngModel)]="isAccepted"
+    inputId="binary"
+    label="I have read and accept"
+    (onChange)="termsAndConditions($event)"
+  ></p-checkbox>
+  <p *ngIf="isAccepted">{{ isAccepted }}</p>
+
+  <h5>Multi Checkboxes</h5>
+  <p-checkbox
+    name="fruits"
+    [(ngModel)]="selectedFruits"
+    label="Apple"
+    value="Apple"
+    (onChange)="addFruit($event)"
+    [disabled]="true"
+  ></p-checkbox>
+  <br />
+  <br />
+  <p-checkbox
+    name="fruits"
+    [(ngModel)]="selectedFruits"
+    label="Orange"
+    value="Orange"
+    (onChange)="addFruit($event)"
+  ></p-checkbox>
+  <br />
+  <br />
+  <p-checkbox
+    name="fruits"
+    [(ngModel)]="selectedFruits"
+    label="Banana"
+    value="Banana"
+    (onChange)="addFruit($event)"
+  ></p-checkbox>
+  <p>{{ selectedFruits }}</p>
+</div>
+
+<div>
+  <h3>Calendar</h3>
+
+  <p-calendar
+    [(ngModel)]="date"
+    dateFormat="dd.mm.yy"
+    [showIcon]="true"
+    [minDate]="minDate"
+    [maxDate]="maxDate"
+    [showTime]="true"
+    [disabledDays]="[0, 6]"
+  ></p-calendar>
+</div>
+
+<br />
+<div></div>
